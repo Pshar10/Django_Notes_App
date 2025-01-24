@@ -1,0 +1,85 @@
+{% extends 'todos/base.html' %}
+
+{% block title %}
+Todo List
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">My Todo List</h3>
+      </div>
+      <div class="card-body">
+        <!-- Add Task Form -->
+        <form method="post" action="{% url 'todos:add' %}">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              placeholder="Add a new task"
+              required
+            />
+            <select name="priority" class="form-select">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Add</button>
+          </div>
+        </form>
+
+        <!-- Search Bar -->
+        <div class="mb-3">
+          <input
+            type="text"
+            id="search-bar"
+            class="form-control"
+            placeholder="Search tasks..."
+          />
+        </div>
+
+        <!-- Task List -->
+        <ul class="list-group" id="todo-list">
+          {% for todo in todo_list %}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+            data-priority="{{ todo.priority|default:'low' }}"
+          >
+            <div>
+              <form method="post" action="{% url 'todos:update' todo.id %}" style="display: inline;">
+                {% csrf_token %}
+                <input
+                  type="checkbox"
+                  name="isCompleted"
+                  onchange="this.form.submit()"
+                  {% if todo.isCompleted %} checked {% endif %}
+                />
+              </form>
+              <span
+                class="ms-2 {% if todo.isCompleted %}text-muted text-decoration-line-through{% endif %}"
+              >
+                {{ todo.title }}
+              </span>
+            </div>
+            <div>
+              <span class="badge bg-primary text-white">
+                {{ todo.priority|default:"low" }}
+              </span>
+              <a href="{% url 'todos:delete' todo.id %}" class="text-danger ms-3">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </div>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-center">No tasks available</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

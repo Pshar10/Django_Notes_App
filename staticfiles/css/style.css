@@ -1,0 +1,20 @@
+#todo-list li {
+  display: list-item; /* Ensure it's a list item by default */
+}
+
+#todo-list li[style*="display: none"] {
+  display: none !important; /* Force items to be hidden when display is none */
+  background-color: #f8d7da; /* Optional: for debugging */
+}
+
+/* For tasks that match */
+.match {
+  background-color: lightgreen; /* Green background */
+  color: green; /* Green text color */
+}
+
+/* For tasks that don't match */
+.no-match {
+  background-color: lightcoral; /* Red background */
+  color: red; /* Red text color */
+}
