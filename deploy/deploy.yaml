@@ -14,17 +14,6 @@ spec:
       labels:
         app: nginx
     spec:
-      initContainers:
-        - name: collectstatic
-          image: pshar10/todo-app:latest
-          command:
-            - "python"
-            - "manage.py"
-            - "collectstatic"
-            - "--noinput"
-          volumeMounts:
-            - name: static-storage
-              mountPath: /static
       containers:
       - name: todo
         image: pshar10/todo-app:latest
@@ -32,7 +21,7 @@ spec:
         - containerPort: 8000
         volumeMounts:
         - name: sqlite-storage
-          mountPath: /db.sqlite3
+          mountPath: /path/to/sqlite/db   # Path where SQLite database file is located in the container
       volumes:
       - name: sqlite-storage
         persistentVolumeClaim:
