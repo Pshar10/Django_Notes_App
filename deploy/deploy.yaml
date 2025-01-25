@@ -19,3 +19,10 @@ spec:
         image: pshar10/todo-app:latest
         ports:
         - containerPort: 8000
+        volumeMounts:
+        - name: sqlite-storage
+          mountPath: /path/to/sqlite/db   # Path where SQLite database file is located in the container
+      volumes:
+      - name: sqlite-storage
+        persistentVolumeClaim:
+          claimName: sqlite-pvc
